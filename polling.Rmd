@@ -12,6 +12,26 @@ library(tidyverse)
 ```{r message=FALSE}
 raw <- read_csv("polls_IT-parliament_2018-10-01.csv")
 ```
+
 Italy polls result.
+
+```{r first_plot}
+raw %>%
+  ggplot(aes(x=date,y=LN))+geom_point() +
+    geom_point(aes(x=date,y=M5S))
+```
+
+```{r}
+raw <- raw %>%
+  select(date, firm, n, sd, source, LN, M5S, PD, FIPDLFI) %>%
+  filter(date >= "2017-10-01") %>%
+  gather(key = "party", value = "share", LN,M5S,PD,FIPDLFI)
+```
+
+```{r}
+raw %>%
+  ggplot(aes(x = date, y = share, color = party)) + geom_point(size=0.5, alpha=0.2) +
+  geom_smooth()
+```
 
 

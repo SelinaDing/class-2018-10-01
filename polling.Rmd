@@ -1,11 +1,17 @@
 ---
 title: "Italian Polls"
-author: "selina"
+author: "Selina"
 date: "2018/10/01"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
 ```
+```{r message=FALSE}
+raw <- read_csv("polls_IT-parliament_2018-10-01.csv")
+```
+Italy polls result.
+
 

@@ -10,26 +10,38 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 ```
 ```{r message=FALSE}
-raw <- read_csv("polls_IT-parliament_2018-10-01.csv")
+raw <- read_csv("https://pollofpolls.eu/get/polls/IT-parliament/format/csv", guess_max = 3000) 
 ```
+
+```{r}
+top_firm <- raw %>%
+  count(firm) %>%
+  arrange(desc(nn)) %>%
+  filter(nn>100)
+```
+```{r}
+poll <- raw %>%
+  filter(firm %in% c(top_firm$firm))
+```
+
 
 Italy polls result.
 
 ```{r first_plot}
-raw %>%
+poll %>%
   ggplot(aes(x=date,y=LN))+geom_point() +
     geom_point(aes(x=date,y=M5S))
 ```
 
 ```{r}
-raw <- raw %>%
+poll <- poll %>%
   select(date, firm, n, sd, source, LN, M5S, PD, FIPDLFI) %>%
   filter(date >= "2017-10-01") %>%
   gather(key = "party", value = "share", LN,M5S,PD,FIPDLFI)
 ```
 
 ```{r}
-raw %>%
+poll %>%
   ggplot(aes(x = date, y = share, color = party)) + geom_point(size=0.5, alpha=0.2) +
   geom_smooth()
 ```
